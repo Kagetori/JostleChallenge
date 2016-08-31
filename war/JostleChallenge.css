@@ -3,6 +3,12 @@
 	width: 33%;
 }
 
+.tabOneVideo {
+	height: 500px;
+	display: block;
+	margin: 0 auto;
+}
+
 /** Example rules used by the template application (remove for your app) */
 h1 {
 	font-size: 2em;
