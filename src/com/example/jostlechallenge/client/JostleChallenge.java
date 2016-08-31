@@ -22,7 +22,7 @@ public class JostleChallenge implements EntryPoint {
 	private TabBar tabs = new TabBar();
 	private final DeckPanel deck = new DeckPanel();
 	private LayoutPanel mainPanel = new LayoutPanel();
-	private VerticalPanel tab1 = new VerticalPanel();
+	private VerticalPanel tabOne = new VerticalPanel();
 	private Label tabOneTitle = new Label();
 	private Label tabOneBody = new Label();
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
@@ -37,13 +37,9 @@ public class JostleChallenge implements EntryPoint {
 		}
 
 		// Adds things to deck
-		tabOneTitle.setText("TITLE");
-		// videoText.setText("Text description");
-		buildTab1();
-		tab1.add(tabOneTitle);
-		tab1.add(tabOneBody);
+		buildTabOne();
 
-		deck.add(tab1);
+		deck.add(tabOne);
 		deck.add(new Label("This thing 2"));
 		deck.add(new Label("This thing 3"));
 
@@ -67,14 +63,20 @@ public class JostleChallenge implements EntryPoint {
 
 	}
 
-	private void buildTab1() {
+	private void buildTabOne() {
+		getTitleAndBody();
+		tabOne.add(tabOneTitle);
+		tabOne.add(tabOneBody);
+	}
+
+	private void getTitleAndBody() {
 		String url = TITLE_URL;
 		url = URL.encode(url);
 
 		JsonpRequestBuilder builder = new JsonpRequestBuilder();
 		builder.requestObject(url, new AsyncCallback<TitleData>() {
 			public void onFailure(Throwable caught) {
-				// TODO handle failure
+				Window.alert("Couldn't retrieve JSON");
 			}
 
 			public void onSuccess(TitleData result) {
@@ -85,7 +87,7 @@ public class JostleChallenge implements EntryPoint {
 
 				String title = result.getTitle();
 				String body = result.getBody();
-				
+
 				tabOneTitle.setText(title);
 				tabOneBody.setText(body);
 			}
