@@ -23,6 +23,7 @@ public class JostleChallenge implements EntryPoint {
 		TabBar tabs = new TabBar();
 		final DeckPanel deck = new DeckPanel(); 
 
+		//Make tabs + deck labels
 		for(int i = 0; i < 3; i++) {
 		    tabs.addTab("Tab " + Integer.toString(i + 1));
 		    deck.add(new Label("Label " + Integer.toString(i + 1)));
@@ -34,25 +35,16 @@ public class JostleChallenge implements EntryPoint {
 		        deck.showWidget(event.getSelectedItem());
 		    }
 		});
-
-		VerticalPanel vPanel = new VerticalPanel();
-		vPanel.add(deck);
-		vPanel.add(tabs);
-		
-		tabs.selectTab(0);
 		
 		LayoutPanel p = new LayoutPanel();
 		p.add(deck);
 		p.add(tabs);
 		
 		p.setWidgetBottomHeight(tabs, 0, Unit.PX, 50, Unit.PX);	
+		tabs.selectTab(0);
 		
-//		//Associate main panel with HTML
+		//Associate main panel with HTML
 		RootLayoutPanel.get().add(p);
 		
-
-		// TODO Create 1st tab
-		// TODO Create 2nd tab
-		// TODO Create 3rd tab
 	}
 }

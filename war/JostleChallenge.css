@@ -1,6 +1,6 @@
 /** Add css rules here for your application. */
-.gwt-TabBar .gwt-TabBarItem {
-	width: auto!important;
+.gwt-TabBar .gwt-TabBarItem-wrapper {
+	width: 33%;
 }
 
 /** Example rules used by the template application (remove for your app) */
