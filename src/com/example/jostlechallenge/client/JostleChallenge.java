@@ -53,6 +53,7 @@ public class JostleChallenge implements EntryPoint {
 			}
 		});
 
+		//TODO Fade in-out animation
 		mainPanel.add(deck);
 		mainPanel.add(tabs);
 
@@ -70,6 +71,8 @@ public class JostleChallenge implements EntryPoint {
 		tabOne.add(tabOneTitle);
 		tabOne.add(tabOneBody);
 		
+		tabOneTitle.setStyleName("title");
+		
 		Video video = Video.createIfSupported();
 		if (video == null) {
 			//Error message here
@@ -78,8 +81,6 @@ public class JostleChallenge implements EntryPoint {
 		}
 		video.addSource("http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4", VideoElement.TYPE_MP4);
 		video.setControls(true);
-		//video.setHeight("500px");
-		//video.setSize("500px", "500px");
 		video.setStyleName("tabOneVideo");
 		tabOne.add(video);
 	}
