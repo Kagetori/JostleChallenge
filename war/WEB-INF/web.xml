@@ -13,12 +13,12 @@
     <!-- Servlets -->
   <servlet>
     <servlet-name>pictureServiceImpl</servlet-name>
-    <servlet-class>com.example.jostlechallenge.server.pictureServiceImpl</servlet-class>
+    <servlet-class>com.example.jostlechallenge.server.PictureServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
     <servlet-name>pictureServiceImpl</servlet-name>
-    <url-pattern>/jostlechallenge/picture</url-pattern>
+    <url-pattern>/jostlechallenge/pictures</url-pattern>
   </servlet-mapping>
   
 

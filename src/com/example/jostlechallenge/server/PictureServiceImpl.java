@@ -4,12 +4,15 @@ import com.example.jostlechallenge.client.Picture;
 import com.example.jostlechallenge.client.PictureService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+@SuppressWarnings("serial")
 public class PictureServiceImpl extends RemoteServiceServlet implements PictureService {
 
-	@Override
-	public Picture[] getPictures() {
-		// TODO Auto-generated method stub
-		return null;
+	public Picture getPictures() throws IllegalArgumentException{
+		// TODO get data from server
+		//Picture[] pictures = new Picture[1];
+		Picture picture = new Picture("title", "myurl");
+		
+		return picture;
 	}
 
 }

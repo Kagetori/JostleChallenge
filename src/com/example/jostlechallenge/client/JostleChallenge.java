@@ -1,6 +1,7 @@
 package com.example.jostlechallenge.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.VideoElement;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -27,7 +28,10 @@ public class JostleChallenge implements EntryPoint {
 	private VerticalPanel tabOne = new VerticalPanel();
 	private Label tabOneTitle = new Label();
 	private Label tabOneBody = new Label();
+	private VerticalPanel tabTwo = new VerticalPanel();
+	private PictureServiceAsync pictureServ = GWT.create(PictureService.class);
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
+	Label alert = new Label("Alert");
 
 	/**
 	 * Entry point method.
@@ -39,10 +43,12 @@ public class JostleChallenge implements EntryPoint {
 		}
 
 		// Adds things to deck
+		//TODO construct tabs 2&3
 		buildTabOne();
-
 		deck.add(tabOne);
-		deck.add(new Label("This thing 2"));
+		buildTabTwo();
+		
+		deck.add(tabTwo);
 		deck.add(new Label("This thing 3"));
 
 		// SelectionHandler for tabs
@@ -65,6 +71,7 @@ public class JostleChallenge implements EntryPoint {
 		RootLayoutPanel.get().add(mainPanel);
 
 	}
+
 
 	private void buildTabOne() {
 		getTitleAndBody();
@@ -108,5 +115,31 @@ public class JostleChallenge implements EntryPoint {
 				tabOneBody.setText(body);
 			}
 		});
+	}
+	
+	private void buildTabTwo() {		
+	    // Initialize the service proxy.
+	    if (pictureServ == null) {
+	    	pictureServ = GWT.create(PictureService.class);
+	    }
+		
+	    //alert.setText("Got to just before callback");
+	     // Set up the callback object.
+	    AsyncCallback<Picture> callback = new AsyncCallback<Picture>() {
+	      public void onFailure(Throwable caught) {
+	        // TODO: Do something with errors.
+	    	  alert.setText("Something went wrong!");
+	      }
+
+	      public void onSuccess(Picture result) {
+	        alert.setText("Got picture");
+	      }
+	    };
+	    
+	    // Make the call to the stock price service.
+	    pictureServ.getPictures(callback);
+	    
+	    tabTwo.add(alert);
+		
 	}
 }

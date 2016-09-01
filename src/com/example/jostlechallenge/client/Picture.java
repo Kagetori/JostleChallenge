@@ -4,22 +4,22 @@ import java.io.Serializable;
 
 public class Picture implements Serializable{
 	
-	private int position;
+	//private int position;
 	private String title;
 	private String url;
 	
 	public Picture(){
 	}
 	
-	public Picture (int position, String title, String url){
-		this.position = position;
+	public Picture (String title, String url){
+		//this.position = position;
 		this.title = title;
 		this.url = url;
 	}
 	
-	public int getPosition(){
-		return this.position;
-	}
+//	public int getPosition(){
+//		return this.position;
+//	}
 	
 	public String getTitle(){
 		return this.title;
