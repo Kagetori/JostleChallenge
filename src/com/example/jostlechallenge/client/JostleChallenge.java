@@ -119,17 +119,19 @@ public class JostleChallenge implements EntryPoint {
 	
 	private void buildTabTwo() {	
 		alert.setVisible(false);
+		
+		//making a RPC call to server and then getting server to get JSON from remote server
+		//Note: this is probably inefficient but I wanted to see if I could do it
 	    // Initialize the service proxy.
 	    if (pictureServ == null) {
 	    	pictureServ = GWT.create(PictureService.class);
 	    }
 		
-	    //alert.setText("Got to just before callback");
 	     // Set up the callback object.
 	    AsyncCallback<Picture> callback = new AsyncCallback<Picture>() {
 	      public void onFailure(Throwable caught) {
-	        // TODO: Do something with errors.
-	    	  alert.setText("Something went wrong!");
+	        //Got an error
+	    	  alert.setText("The RPC call didn't work!");
 	    	  alert.setVisible(true);
 	      }
 
