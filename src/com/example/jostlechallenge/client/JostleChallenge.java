@@ -117,7 +117,8 @@ public class JostleChallenge implements EntryPoint {
 		});
 	}
 	
-	private void buildTabTwo() {		
+	private void buildTabTwo() {	
+		alert.setVisible(false);
 	    // Initialize the service proxy.
 	    if (pictureServ == null) {
 	    	pictureServ = GWT.create(PictureService.class);
@@ -129,10 +130,13 @@ public class JostleChallenge implements EntryPoint {
 	      public void onFailure(Throwable caught) {
 	        // TODO: Do something with errors.
 	    	  alert.setText("Something went wrong!");
+	    	  alert.setVisible(true);
 	      }
 
 	      public void onSuccess(Picture result) {
-	        alert.setText("Got picture");
+	        //alert.setText("Picture title: " + result.getTitle());
+	        alert.setText("Picture url: " + result.getUrl());
+	        alert.setVisible(true);
 	      }
 	    };
 	    

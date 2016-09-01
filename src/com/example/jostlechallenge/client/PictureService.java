@@ -5,5 +5,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("pictures")
 public interface PictureService extends RemoteService {
-	Picture getPictures() throws IllegalArgumentException;;
+	Picture getPictures();
 }
