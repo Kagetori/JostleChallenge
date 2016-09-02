@@ -29,7 +29,7 @@ public class JostleChallenge implements EntryPoint {
 	private Label tabOneTitle = new Label();
 	private Label tabOneBody = new Label();
 	private VerticalPanel tabTwo = new VerticalPanel();
-	private PictureServiceAsync pictureServ = GWT.create(PictureService.class);
+	private JsonServiceAsync pictureServ = GWT.create(JsonService.class);
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
 	Label alert = new Label("Alert");
 
@@ -124,20 +124,20 @@ public class JostleChallenge implements EntryPoint {
 		//Note: this is probably inefficient but I wanted to see if I could do it
 	    // Initialize the service proxy.
 	    if (pictureServ == null) {
-	    	pictureServ = GWT.create(PictureService.class);
+	    	pictureServ = GWT.create(JsonService.class);
 	    }
 		
 	     // Set up the callback object.
-	    AsyncCallback<Picture> callback = new AsyncCallback<Picture>() {
+	    AsyncCallback<String> callback = new AsyncCallback<String>() {
 	      public void onFailure(Throwable caught) {
 	        //Got an error
 	    	  alert.setText("The RPC call didn't work!");
 	    	  alert.setVisible(true);
 	      }
 
-	      public void onSuccess(Picture result) {
+	      public void onSuccess(String result) {
 	        //alert.setText("Picture title: " + result.getTitle());
-	        alert.setText("Picture url: " + result.getUrl());
+	        alert.setText("This is the result: " + result);
 	        alert.setVisible(true);
 	      }
 	    };

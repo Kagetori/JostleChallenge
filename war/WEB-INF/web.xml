@@ -12,13 +12,13 @@
   
     <!-- Servlets -->
   <servlet>
-    <servlet-name>pictureServiceImpl</servlet-name>
-    <servlet-class>com.example.jostlechallenge.server.PictureServiceImpl</servlet-class>
+    <servlet-name>jsonServiceImpl</servlet-name>
+    <servlet-class>com.example.jostlechallenge.server.JsonServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>pictureServiceImpl</servlet-name>
-    <url-pattern>/jostlechallenge/pictures</url-pattern>
+    <servlet-name>jsonServiceImpl</servlet-name>
+    <url-pattern>/jostlechallenge/json</url-pattern>
   </servlet-mapping>
   
 
