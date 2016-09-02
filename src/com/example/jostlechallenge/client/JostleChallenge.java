@@ -36,6 +36,7 @@ public class JostleChallenge implements EntryPoint {
 	private final DeckPanel deck = new DeckPanel();
 	private LayoutPanel mainPanel = new LayoutPanel();
 	private VerticalPanel tabOne = new VerticalPanel();
+	private ScrollPanel tabOneScroll = new ScrollPanel();
 	private Label tabOneTitle = new Label();
 	private Label tabOneBody = new Label();
 	private VerticalPanel tabTwo = new VerticalPanel();
@@ -56,7 +57,8 @@ public class JostleChallenge implements EntryPoint {
 		// Adds things to deck
 		//TODO construct tabs 2&3
 		buildTabOne();
-		deck.add(tabOne);
+		tabOneScroll.add(tabOne);
+		deck.add(tabOneScroll);
 		
 		buildTabTwo();
 		//tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -138,7 +140,7 @@ public class JostleChallenge implements EntryPoint {
 		alert.setVisible(false);
 		
 		//making a RPC call to server and then getting server to get JSON from remote server
-		//Note: this is probably inefficient but I wanted to see if I could do it
+		//Note: this is probably really inefficient but I wanted to see if I could do it
 	    // Initialize the service proxy.
 	    if (pictureServ == null) {
 	    	pictureServ = GWT.create(JsonService.class);
