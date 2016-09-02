@@ -1,9 +1,15 @@
 package com.example.jostlechallenge.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.VideoElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.http.client.URL;
@@ -12,9 +18,13 @@ import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DeckPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -29,6 +39,7 @@ public class JostleChallenge implements EntryPoint {
 	private Label tabOneTitle = new Label();
 	private Label tabOneBody = new Label();
 	private VerticalPanel tabTwo = new VerticalPanel();
+	private ScrollPanel tabTwoScroll = new ScrollPanel();
 	private JsonServiceAsync pictureServ = GWT.create(JsonService.class);
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
 	Label alert = new Label("Alert");
@@ -46,9 +57,11 @@ public class JostleChallenge implements EntryPoint {
 		//TODO construct tabs 2&3
 		buildTabOne();
 		deck.add(tabOne);
-		buildTabTwo();
 		
-		deck.add(tabTwo);
+		buildTabTwo();
+		//tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		tabTwoScroll.add(tabTwo);
+		deck.add(tabTwoScroll);
 		deck.add(new Label("This thing 3"));
 
 		// SelectionHandler for tabs
@@ -118,6 +131,10 @@ public class JostleChallenge implements EntryPoint {
 	}
 	
 	private void buildTabTwo() {	
+	    tabTwo.setWidth("100%");
+	    tabTwo.setHeight("100%");
+	    tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+	    tabTwo.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		alert.setVisible(false);
 		
 		//making a RPC call to server and then getting server to get JSON from remote server
@@ -137,8 +154,10 @@ public class JostleChallenge implements EntryPoint {
 
 	      public void onSuccess(String result) {
 	        //alert.setText("Picture title: " + result.getTitle());
-	        alert.setText("This is the result: " + result);
-	        alert.setVisible(true);
+//	        alert.setText("This is the result: " + result);
+//	        alert.setVisible(true);
+	    	  displayPictures(JsonUtils.<JsArray<Picture>>safeEval(result));
+	    	  //updateTable(JsonUtils.<JsArray<StockData>>safeEval(response.getText()));
 	      }
 	    };
 	    
@@ -147,5 +166,40 @@ public class JostleChallenge implements EntryPoint {
 	    
 	    tabTwo.add(alert);
 		
+	}
+	
+	private void displayPictures(JsArray<Picture> pictures) {
+		// Add picture and description to tab
+		for (int i = 0; i < 11; i++) {
+			final Image image = new Image();
+			Picture picture = pictures.get(i);
+			final String id = picture.getId();
+			
+			//Hook up error handler (in case image doesn't load)
+		    image.addErrorHandler(new ErrorHandler() {
+		        public void onError(ErrorEvent event) {
+		          alert.setText("An error occurred while loading.");
+		        }
+		      });
+		    
+		    // Point the image at an URL
+		    image.setUrl(picture.getUrl());
+		    
+		    // Add a ClickHandler so the image is clickable
+		    image.addClickHandler(new ClickHandler() {
+		      public void onClick(ClickEvent event) {
+		        Window.alert("Picture id is: " + id);
+		      }
+		    });
+		    
+		    //image.addStyleName("customImage");
+			
+		    // Description for the picture
+			Label picDescription = new Label (pictures.get(i).getTitle());
+			
+			tabTwo.add(image);
+			tabTwo.add(picDescription);
+		}	
+		Label out = new Label("Hello");
 	}
 }

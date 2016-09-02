@@ -17,7 +17,7 @@ public class JsonServiceImpl extends RemoteServiceServlet implements JsonService
 		String jsonString = queryPicturesFromRemote();
 		//String sample = jsonString.substring(0, 20);
 		
-		return jsonString.substring(0,100);
+		return jsonString;
 	}
 
 	private String queryPicturesFromRemote() {
