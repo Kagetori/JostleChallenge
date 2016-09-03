@@ -51,7 +51,6 @@ public class JostleChallenge implements EntryPoint {
 	private Label feedback = new Label();
 	private JsonServiceAsync pictureServ = GWT.create(JsonService.class);
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
-	
 
 	/**
 	 * Entry point method.
@@ -63,16 +62,16 @@ public class JostleChallenge implements EntryPoint {
 		}
 
 		// Adds things to deck
-		//TODO construct tabs 2&3
+		// TODO construct tabs 2&3
 		buildTabOne();
 		tabOneScroll.add(tabOne);
 		deck.add(tabOneScroll);
-		
+
 		buildTabTwo();
-		//tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		// tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		tabTwoScroll.add(tabTwo);
 		deck.add(tabTwoScroll);
-		
+
 		buildTabThree();
 		deck.add(tabThree);
 
@@ -84,7 +83,7 @@ public class JostleChallenge implements EntryPoint {
 			}
 		});
 
-		//TODO Fade in-out animation
+		// TODO Fade in-out animation
 		mainPanel.add(deck);
 		mainPanel.add(tabs);
 
@@ -97,21 +96,21 @@ public class JostleChallenge implements EntryPoint {
 
 	}
 
-
 	private void buildTabOne() {
 		getTitleAndBody();
 		tabOne.add(tabOneTitle);
 		tabOne.add(tabOneBody);
-		
+
 		tabOneTitle.setStyleName("title");
-		
+
 		Video video = Video.createIfSupported();
 		if (video == null) {
-			//Error message here
+			// Error message here
 			Window.alert("HTML5 Video is not supported by your browser");
 			return;
 		}
-		video.addSource("http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4", VideoElement.TYPE_MP4);
+		video.addSource("http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4",
+				VideoElement.TYPE_MP4);
 		video.setControls(true);
 		video.setStyleName("tabOneVideo");
 		tabOne.add(video);
@@ -141,98 +140,154 @@ public class JostleChallenge implements EntryPoint {
 			}
 		});
 	}
-	
-	private void buildTabTwo() {	
-	    tabTwo.setWidth("100%");
-	    tabTwo.setHeight("100%");
-	    tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-	    tabTwo.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		alert.setVisible(false);
-		
-		//making a RPC call to server and then getting server to get JSON from remote server
-		//Note: this is probably really inefficient but I wanted to see if I could do it
-	    // Initialize the service proxy.
-	    if (pictureServ == null) {
-	    	pictureServ = GWT.create(JsonService.class);
-	    }
-		
-	     // Set up the callback object.
-	    AsyncCallback<String> callback = new AsyncCallback<String>() {
-	      public void onFailure(Throwable caught) {
-	        //Got an error
-	    	  alert.setText("The RPC call didn't work!");
-	    	  alert.setVisible(true);
-	      }
 
-	      public void onSuccess(String result) {
-	        //alert.setText("Picture title: " + result.getTitle());
-//	        alert.setText("This is the result: " + result);
-//	        alert.setVisible(true);
-	    	  displayPictures(JsonUtils.<JsArray<Picture>>safeEval(result));
-	    	  //updateTable(JsonUtils.<JsArray<StockData>>safeEval(response.getText()));
-	      }
-	    };
-	    
-	    // Make the call to the stock price service.
-	    pictureServ.getPictures(callback);
-	    
-	    tabTwo.add(alert);
-		
+	private void buildTabTwo() {
+		tabTwo.setWidth("100%");
+		tabTwo.setHeight("100%");
+		tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		tabTwo.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		alert.setVisible(false);
+
+		// making a RPC call to server and then getting server to get JSON from
+		// remote server
+		// Note: this is probably really inefficient but I wanted to see if I
+		// could do it
+		// Initialize the service proxy.
+		if (pictureServ == null) {
+			pictureServ = GWT.create(JsonService.class);
+		}
+
+		// Set up the callback object.
+		AsyncCallback<String> callback = new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {
+				// Got an error
+				alert.setText("The RPC call didn't work!");
+				alert.setVisible(true);
+			}
+
+			public void onSuccess(String result) {
+				// alert.setText("Picture title: " + result.getTitle());
+				// alert.setText("This is the result: " + result);
+				// alert.setVisible(true);
+				displayPictures(JsonUtils.<JsArray<Picture>>safeEval(result));
+				// updateTable(JsonUtils.<JsArray<StockData>>safeEval(response.getText()));
+			}
+		};
+
+		// Make the call to the stock price service.
+		pictureServ.getPictures(callback);
+
+		tabTwo.add(alert);
+
 	}
-	
+
 	private void displayPictures(JsArray<Picture> pictures) {
 		// Add picture and description to tab
-		for (int i = 0; i < 11; i++) {
+		for (int i = 0; i < 10; i++) {
 			final Image image = new Image();
 			Picture picture = pictures.get(i);
 			final String id = picture.getId();
-			
-			//Hook up error handler (in case image doesn't load)
-		    image.addErrorHandler(new ErrorHandler() {
-		        public void onError(ErrorEvent event) {
-		          alert.setText("An error occurred while loading.");
-		        }
-		      });
-		    
-		    // Point the image at an URL
-		    image.setUrl(picture.getUrl());
-		    
-		    // Add a ClickHandler so the image is clickable
-		    image.addClickHandler(new ClickHandler() {
-		      public void onClick(ClickEvent event) {
-		        Window.alert("Picture id is: " + id);
-		      }
-		    });
-		    
-		    //image.addStyleName("customImage");
-			
-		    // Description for the picture
-			Label picDescription = new Label (pictures.get(i).getTitle());
-			
+
+			// Hook up error handler (in case image doesn't load)
+			image.addErrorHandler(new ErrorHandler() {
+				public void onError(ErrorEvent event) {
+					alert.setText("An error occurred while loading.");
+				}
+			});
+
+			// Point the image at an URL
+			image.setUrl(picture.getUrl());
+
+			// Add a ClickHandler so the image is clickable
+			image.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					Window.alert("Picture position is: " + id);
+				}
+			});
+
+			// image.addStyleName("customImage");
+
+			// Description for the picture
+			Label picDescription = new Label(pictures.get(i).getTitle());
+
 			tabTwo.add(image);
 			tabTwo.add(picDescription);
-		}	
+		}
 		Label out = new Label("Hello");
 	}
-	
-	private void buildTabThree(){
+
+	private void buildTabThree() {
 		tabThreeTitle.setText("Hello! Welcome!");
 		tabThreeTitle.setStyleName("title");
-		
-		//Add keypress handler for textbox. Triggers for every key press.
+		final String emptyMessage = "Please write something in the text box";
+		feedback.setText(emptyMessage);
+
+		// Add keypress handler for textbox. Triggers for every key press.
 		inputTextBox.addKeyPressHandler(new KeyPressHandler() {
 
-	        public void onKeyPress(KeyPressEvent event) {
-	        	String input = inputTextBox.getText().trim();
-	        	feedback.setText(input + event.getCharCode());
-	        }
-	      });
-		
-		//feedback.setText("Hello!");
-		
+			// TODO Add another listener for backspace and stuff
+			public void onKeyPress(KeyPressEvent event) {
+				String input = inputTextBox.getText().trim();
+				char symbol = event.getCharCode();
+				String fullInput = input + symbol;
+
+				// Check for rules:
+				// // TODO Empty Textbox
+				// if (fullInput == "") {
+				// feedback.setText(emptyMessage);
+				// } else {
+				// // TODO Text too short (<5 chars)
+				// if (fullInput.length() < 5) {
+				// feedback.setText("Please use at least 5 characters");
+				// } else {
+				// // TODO Text too long (>12 chars)
+				// if (fullInput.length() > 12) {
+				// feedback.setText("Please use less than 12 characters");
+				// } else {
+				// // TODO No special characters
+				// if (!fullInput.matches("^[0-9A-Za-z]{5,12}$")) {
+				// feedback.setText("Please do not use special characters!");
+				// } else {
+				// // TODO Text must contain at least 1 number
+				// }
+				//
+				// feedback.setText(input + event.getCharCode());
+				// }
+				// }
+				// }
+
+				//TODO Figure out how to not have special characters
+				if (!fullInput.matches("^[0-9A-Za-z]{5,12}$")) {
+					if (fullInput != "") {
+						if (fullInput.length() > 5) {
+							if (fullInput.length() < 12) {
+
+								// TODO if more than one number
+								feedback.setText(input + event.getCharCode());
+							} else {
+								// Text too long
+								feedback.setText("Please use less than 12 characters");
+							}
+						} else {
+							// Text too short
+							feedback.setText("Please use at least 5 characters");
+						}
+					} else {
+						// Textbox is empty
+						feedback.setText(emptyMessage);
+					}
+				} else {
+					// Has special characters
+					feedback.setText("Please do not use special characters!");
+				}
+			} // end onKeyPress
+		});
+
+		// feedback.setText("Hello!");
+
 		tabThree.add(tabThreeTitle);
 		tabThree.add(inputTextBox);
 		tabThree.add(feedback);
-		
+
 	}
 }
