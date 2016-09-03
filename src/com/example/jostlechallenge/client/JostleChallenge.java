@@ -10,6 +10,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.http.client.URL;
@@ -26,6 +28,7 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TabBar;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -41,9 +44,14 @@ public class JostleChallenge implements EntryPoint {
 	private Label tabOneBody = new Label();
 	private VerticalPanel tabTwo = new VerticalPanel();
 	private ScrollPanel tabTwoScroll = new ScrollPanel();
+	private Label alert = new Label();
+	private VerticalPanel tabThree = new VerticalPanel();
+	private Label tabThreeTitle = new Label();
+	private TextBox inputTextBox = new TextBox();
+	private Label feedback = new Label();
 	private JsonServiceAsync pictureServ = GWT.create(JsonService.class);
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
-	Label alert = new Label("Alert");
+	
 
 	/**
 	 * Entry point method.
@@ -64,7 +72,9 @@ public class JostleChallenge implements EntryPoint {
 		//tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		tabTwoScroll.add(tabTwo);
 		deck.add(tabTwoScroll);
-		deck.add(new Label("This thing 3"));
+		
+		buildTabThree();
+		deck.add(tabThree);
 
 		// SelectionHandler for tabs
 		tabs.addSelectionHandler(new SelectionHandler<Integer>() {
@@ -203,5 +213,26 @@ public class JostleChallenge implements EntryPoint {
 			tabTwo.add(picDescription);
 		}	
 		Label out = new Label("Hello");
+	}
+	
+	private void buildTabThree(){
+		tabThreeTitle.setText("Hello! Welcome!");
+		tabThreeTitle.setStyleName("title");
+		
+		//Add keypress handler for textbox. Triggers for every key press.
+		inputTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+	        public void onKeyPress(KeyPressEvent event) {
+	        	String input = inputTextBox.getText().trim();
+	        	feedback.setText(input + event.getCharCode());
+	        }
+	      });
+		
+		//feedback.setText("Hello!");
+		
+		tabThree.add(tabThreeTitle);
+		tabThree.add(inputTextBox);
+		tabThree.add(feedback);
+		
 	}
 }
