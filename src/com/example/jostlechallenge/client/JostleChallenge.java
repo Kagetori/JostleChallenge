@@ -10,6 +10,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -17,6 +20,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.media.client.Video;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DeckPanel;
@@ -49,6 +53,7 @@ public class JostleChallenge implements EntryPoint {
 	private Label tabThreeTitle = new Label();
 	private TextBox inputTextBox = new TextBox();
 	private Label feedback = new Label();
+	private String emptyMessage = "Please write something in the text box";
 	private JsonServiceAsync pictureServ = GWT.create(JsonService.class);
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
 
@@ -219,69 +224,29 @@ public class JostleChallenge implements EntryPoint {
 	private void buildTabThree() {
 		tabThreeTitle.setText("Hello! Welcome!");
 		tabThreeTitle.setStyleName("title");
-		final String emptyMessage = "Please write something in the text box";
 		feedback.setText(emptyMessage);
 
 		// Add keypress handler for textbox. Triggers for every key press.
 		inputTextBox.addKeyPressHandler(new KeyPressHandler() {
-
-			// TODO Add another listener for backspace and stuff
 			public void onKeyPress(KeyPressEvent event) {
-				String input = inputTextBox.getText().trim();
-				char symbol = event.getCharCode();
-				String fullInput = input + symbol;
-
-				// Check for rules:
-				// // TODO Empty Textbox
-				// if (fullInput == "") {
-				// feedback.setText(emptyMessage);
-				// } else {
-				// // TODO Text too short (<5 chars)
-				// if (fullInput.length() < 5) {
-				// feedback.setText("Please use at least 5 characters");
-				// } else {
-				// // TODO Text too long (>12 chars)
-				// if (fullInput.length() > 12) {
-				// feedback.setText("Please use less than 12 characters");
-				// } else {
-				// // TODO No special characters
-				// if (!fullInput.matches("^[0-9A-Za-z]{5,12}$")) {
-				// feedback.setText("Please do not use special characters!");
-				// } else {
-				// // TODO Text must contain at least 1 number
-				// }
-				//
-				// feedback.setText(input + event.getCharCode());
-				// }
-				// }
-				// }
-
-				//TODO Figure out how to not have special characters
-				if (!fullInput.matches("^[0-9A-Za-z]{5,12}$")) {
-					if (fullInput != "") {
-						if (fullInput.length() > 5) {
-							if (fullInput.length() < 12) {
-
-								// TODO if more than one number
-								feedback.setText(input + event.getCharCode());
-							} else {
-								// Text too long
-								feedback.setText("Please use less than 12 characters");
-							}
-						} else {
-							// Text too short
-							feedback.setText("Please use at least 5 characters");
-						}
-					} else {
-						// Textbox is empty
-						feedback.setText(emptyMessage);
-					}
-				} else {
-					// Has special characters
-					feedback.setText("Please do not use special characters!");
-				}
-			} // end onKeyPress
+				updateLabel();
+			}
 		});
+
+		// Add keydown handler for textbox. Triggers for every key press.
+		inputTextBox.addKeyDownHandler(new KeyDownHandler() {
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					// TODO Submit the word
+
+				} else {
+					updateLabel();
+				}
+			}
+		});
+
+		// TODO Add another listener for backspace and stuff
 
 		// feedback.setText("Hello!");
 
@@ -289,5 +254,46 @@ public class JostleChallenge implements EntryPoint {
 		tabThree.add(inputTextBox);
 		tabThree.add(feedback);
 
+	}
+
+	private void updateLabel() {
+		// Make a timer so it will get updated text from textbox
+		Timer timer = new Timer() {
+			public void run() {
+				String input = inputTextBox.getText();
+				checkString(input);
+			}
+		};
+		// Execute the timer
+		timer.schedule(1);
+	}
+
+	// Checks text for rules (5-12 chars, no special chars, at least one number)
+	private void checkString(String input) {
+		if (!input.matches("^[0-9A-Za-z]{0,100}$")) {
+			feedback.setText("Please do not use special characters!");
+		} else {
+			if (input != "") {
+				if (input.length() > 5) {
+					if (input.length() < 12) {
+						if (input.matches(".*\\d+.*")) {
+							feedback.setText(input);
+						} else {
+							// No numbers
+							feedback.setText("Must contain at least one number");
+						}
+					} else {
+						// Text too long
+						feedback.setText("Please use less than 12 characters");
+					}
+				} else {
+					// Text too short
+					feedback.setText("Please use at least 5 characters");
+				}
+			} else {
+				// Textbox is empty
+				feedback.setText(emptyMessage);
+			}
+		}
 	}
 }
