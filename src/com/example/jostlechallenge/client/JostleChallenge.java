@@ -133,7 +133,8 @@ public class JostleChallenge implements EntryPoint {
 		tabOne.add(tabOneTitle);
 		tabOne.add(tabOneBody);
 
-		tabOneTitle.setStyleName("title");
+		tabOneTitle.addStyleName("title");
+		tabOneTitle.addStyleName("tabOneTitle");
 
 		Video video = Video.createIfSupported();
 		if (video == null) {
@@ -252,9 +253,9 @@ public class JostleChallenge implements EntryPoint {
 		tabThree.setWidth("100%");
 		tabThree.setHeight("100%");
 		tabThree.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		tabThreeTitle.setText("Hello! Welcome!");
+		tabThreeTitle.setText("Hello! Welcome to the Text Color-Changer!");
 		tabThreeTitle.setStyleName("title");
-		instructions.setHTML("Please type your word below. A word must: " + "<br/>- have 5 - 12 characters"
+		instructions.setHTML("First, type your word below. A word must: " + "<br/>- have 5 - 12 characters"
 				+ "<br/>- contain at least one number" + "<br/>- not have any special characters, including spaces");
 
 		feedback.setText(emptyMessage);
@@ -292,6 +293,7 @@ public class JostleChallenge implements EntryPoint {
 		tabThree.add(instructions);
 		textboxPanel.add(inputTextBox);
 		textboxPanel.add(submitButton);
+		textboxPanel.addStyleName("textboxPanel");
 		tabThree.add(textboxPanel);
 		tabThree.add(feedback);
 		tabThree.add(display);
@@ -325,7 +327,7 @@ public class JostleChallenge implements EntryPoint {
 		display.addStyleName("displayText");
 		display.addStyleName("displaySize");
 		
-		// Setup timer to get width of screen automatically.
+		// Setup timer to set size of label automatically.
 		Timer refreshTimer = new Timer() {
 			@Override
 			public void run() {
@@ -335,8 +337,8 @@ public class JostleChallenge implements EntryPoint {
 		refreshTimer.scheduleRepeating(500);
 	}
 
+	// Sets the size of the label as a function of screen width
 	private void setLabelSize() {
-		// TODO Auto-generated method stub
 		int windowWidth = Window.getClientWidth();
 		StyleInjector.inject(".displaySize { font-size: " + windowWidth/10 + "px;");		
 		
@@ -408,6 +410,8 @@ public class JostleChallenge implements EntryPoint {
 
 	// Checks text for rules (5-12 chars, no special chars, at least one number)
 	private void checkString(String input) {
+		feedback.setStyleName("errorLabel");
+		
 		if (!input.matches("^[0-9A-Za-z]{0,100}$")) {
 			feedback.setText("Please do not use special characters!");
 		} else {
@@ -415,7 +419,8 @@ public class JostleChallenge implements EntryPoint {
 				if (input.length() >= 5) {
 					if (input.length() <= 12) {
 						if (input.matches(".*\\d+.*")) {
-							feedback.setText(input);
+							feedback.setText("Word is fine! Press the submit button!");
+							feedback.setStyleName("successLabel");
 						} else {
 							// No numbers
 							feedback.setText("Must contain at least one number");
@@ -431,6 +436,7 @@ public class JostleChallenge implements EntryPoint {
 			} else {
 				// Textbox is empty
 				feedback.setText(emptyMessage);
+				feedback.setStyleName("neutralLabel");
 			}
 		}
 	}

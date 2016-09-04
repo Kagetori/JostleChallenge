@@ -20,6 +20,11 @@
 	font-size: 2em;
 	font-weight: bold;
 	color: #777777;
+	padding: 20px 0px 20px;
+}
+
+.tabOneTitle {
+	padding: 20px 0px 5px !important;
 }
 
 .customImage {
@@ -31,7 +36,6 @@
 }
 
 .displayText {
-/* 	font-size: 10em; */
 	font-weight: bold;
 	color: #000000;
 	text-align: center;
@@ -41,25 +45,40 @@
 	font-size: 2em;
 }
 
-/* .gwt-Label { */
-/* 	width: 40% !important; */
-/* 	height: auto !important; */
-/* } */
-
 .gwt-Button-color {
 	margin: 0px 5px 0px 5px !important;
 }
 
-.fade {
-   opacity: 1;
-   transition: opacity .25s ease-in-out;
-   -moz-transition: opacity .25s ease-in-out;
-   -webkit-transition: opacity .25s ease-in-out;
-   }
+.gwt-Label{
+	padding: 0px 0px 20px;
+}
+
+.textboxPanel {
+	margin: 30px 0px 0px 5px;
+}
+
+.errorLabel {
+	color: red;
+}
+
+.successLabel {
+	color: green;
+}
+
+.neutralLabel {
+	color: black;
+}
+
+/* .fade { */
+/*    opacity: 1; */
+/*    transition: opacity .25s ease-in-out; */
+/*    -moz-transition: opacity .25s ease-in-out; */
+/*    -webkit-transition: opacity .25s ease-in-out; */
+/*    } */
    
-   .fade:transition {
-      opacity: 0.5;
-      }
+/*    .fade:transition { */
+/*       opacity: 0.5; */
+/*       } */
 
 /** Example rules used by the template application (remove for your app) */
 
