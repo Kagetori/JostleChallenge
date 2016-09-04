@@ -23,10 +23,12 @@ import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -53,7 +55,9 @@ public class JostleChallenge implements EntryPoint {
 	private VerticalPanel tabThree = new VerticalPanel();
 	private Label tabThreeTitle = new Label();
 	private HTML instructions = new HTML();
+	private HorizontalPanel textboxPanel = new HorizontalPanel();
 	private TextBox inputTextBox = new TextBox();
+	private Button submitButton = new Button("Submit");
 	private Label feedback = new Label();
 	private String emptyMessage = "Please write something in the text box";
 	private JsonServiceAsync pictureServ = GWT.create(JsonService.class);
@@ -245,18 +249,54 @@ public class JostleChallenge implements EntryPoint {
 			@Override
 			public void onKeyDown(KeyDownEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					// TODO Submit the word
-
+					// Submit the word
+					updateLabel();
+					submitWord();
 				} else {
 					updateLabel();
 				}
 			}
 		});
+		
+		// Submit the word when the button is pressed
+		submitButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				updateLabel();
+				submitWord();
+			}
+		});
 
 		tabThree.add(tabThreeTitle);
 		tabThree.add(instructions);
-		tabThree.add(inputTextBox);
+		textboxPanel.add(inputTextBox);
+		textboxPanel.add(submitButton);
+		tabThree.add(textboxPanel);
 		tabThree.add(feedback);
+	}
+
+	// Checks if word follows the rules and if it does, go to next step
+	private void submitWord() {
+		// Check for rules
+		String input = inputTextBox.getText();
+		
+		if (!input.matches("^[0-9a-zA-Z\\.]{5,12}$")) {
+			Window.alert("Sorry, invalid word!");
+			//inputTextBox.setText("");			
+		} else {
+			if (input.matches(".*\\d+.*")){
+				// Go to next step
+				colorChanger(input);
+				//inputTextBox.setText("");
+			} else {
+				Window.alert("Sorry, invalid word!");
+			}
+		}				
+	}
+
+	private void colorChanger(String input) {
+		//TODO Implement this method
+		Window.alert("Hi, I'm the color changer!");
+		
 	}
 
 	private void updateLabel() {
@@ -277,8 +317,8 @@ public class JostleChallenge implements EntryPoint {
 			feedback.setText("Please do not use special characters!");
 		} else {
 			if (input != "") {
-				if (input.length() > 5) {
-					if (input.length() < 12) {
+				if (input.length() >= 5) {
+					if (input.length() <= 12) {
 						if (input.matches(".*\\d+.*")) {
 							feedback.setText(input);
 						} else {
