@@ -21,6 +21,17 @@
 	margin: 0 auto;
 }
 
+.displayText {
+	font-size: 10em;
+	font-weight: bold;
+	color: #000000;
+	text-align: center;
+}
+
+.gwt-Button-color {
+	margin: 0px 5px 0px 5px !important;
+}
+
 /** Example rules used by the template application (remove for your app) */
 
 

@@ -321,47 +321,54 @@ public class JostleChallenge implements EntryPoint {
 
 	// Makes buttons that change text color. Color strings must be valid.
 	private void makeButtonPanel() {
-		buttonColors.add("Black");
-		buttonColors.add("Red");
-		buttonColors.add("Blue");
-		buttonColors.add("Green");
-		buttonColors.add("Purple");
+		// Make sure you don't make multiple buttonPanels
+		if (buttonColors.size() == 0) {
+			Label colorChanger = new Label("Choose a color: ");
+			buttonPanel.add(colorChanger);
 
-		for (int i = 0; i < buttonColors.size(); i++) {
-			final String color = buttonColors.get(i);
-			Button colorButton = new Button(color);
+			buttonColors.add("Black");
+			buttonColors.add("Red");
+			buttonColors.add("Blue");
+			buttonColors.add("Green");
+			buttonColors.add("Purple");
 
-			colorButton.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					display.getElement().getStyle().setColor(color);
-				}
-			});
-			
-			buttonPanel.add(colorButton);
+			for (int i = 0; i < buttonColors.size(); i++) {
+				final String color = buttonColors.get(i);
+				Button colorButton = new Button(color);
+				colorButton.addStyleDependentName("color");
+
+				colorButton.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						display.getElement().getStyle().setColor(color);
+					}
+				});
+
+				buttonPanel.add(colorButton);
+			}
 		}
-		
-//		for (int i = 0; i < buttonColors.size(); i++) {
-//			final String color = buttonColors.get(i);
-//			Button colorButton = new Button(color);
-//			final String currentColor = "Black";
-//
-//			colorButton.addMouseOverHandler(new MouseOverHandler() {
-//				public void onMouseOver(MouseOverEvent event) {
-//					// TODO Auto-generated method stub
-//					currentColor = display.getElement().getStyle().getColor();
-//					display.getElement().getStyle().setColor(color);
-//				}
-//			});
-//			
-//			colorButton.addMouseOutHandler(new MouseOutHandler() {
-//				public void onMouseOut(MouseOutEvent event) {
-//					// TODO Auto-generated method stub
-//					display.getElement().getStyle().setColor(currentColor);
-//				}
-//			});
-//			
-//			buttonPanel.add(colorButton);
-//		}
+
+		// for (int i = 0; i < buttonColors.size(); i++) {
+		// final String color = buttonColors.get(i);
+		// Button colorButton = new Button(color);
+		// final String currentColor = "Black";
+		//
+		// colorButton.addMouseOverHandler(new MouseOverHandler() {
+		// public void onMouseOver(MouseOverEvent event) {
+		// // TODO Auto-generated method stub
+		// currentColor = display.getElement().getStyle().getColor();
+		// display.getElement().getStyle().setColor(color);
+		// }
+		// });
+		//
+		// colorButton.addMouseOutHandler(new MouseOutHandler() {
+		// public void onMouseOut(MouseOutEvent event) {
+		// // TODO Auto-generated method stub
+		// display.getElement().getStyle().setColor(currentColor);
+		// }
+		// });
+		//
+		// buttonPanel.add(colorButton);
+		// }
 	}
 
 	private void updateLabel() {
