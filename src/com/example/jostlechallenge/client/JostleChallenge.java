@@ -1,5 +1,8 @@
 package com.example.jostlechallenge.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
@@ -60,6 +63,7 @@ public class JostleChallenge implements EntryPoint {
 	private TextBox inputTextBox = new TextBox();
 	private Button submitButton = new Button("Submit");
 	private HorizontalPanel buttonPanel = new HorizontalPanel();
+	private List<String> buttonColors = new ArrayList();
 	private Label feedback = new Label();
 	private Label display = new Label();
 	private String emptyMessage = "Please write something in the text box";
@@ -236,11 +240,9 @@ public class JostleChallenge implements EntryPoint {
 		tabThree.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		tabThreeTitle.setText("Hello! Welcome!");
 		tabThreeTitle.setStyleName("title");
-		instructions.setHTML("Please type your word below. A word must: "
-				+ "<br/>- have 5 - 12 characters"
-				+ "<br/>- contain at least one number"
-				+ "<br/>- not have any special characters, including spaces");
-		
+		instructions.setHTML("Please type your word below. A word must: " + "<br/>- have 5 - 12 characters"
+				+ "<br/>- contain at least one number" + "<br/>- not have any special characters, including spaces");
+
 		feedback.setText(emptyMessage);
 
 		// Add keypress handler for textbox. Triggers for characters.
@@ -263,7 +265,7 @@ public class JostleChallenge implements EntryPoint {
 				}
 			}
 		});
-		
+
 		// Submit the word when the button is pressed
 		submitButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -286,40 +288,51 @@ public class JostleChallenge implements EntryPoint {
 	private void submitWord() {
 		// Check for rules
 		String input = inputTextBox.getText();
-		
+
 		if (!input.matches("^[0-9a-zA-Z\\.]{5,12}$")) {
 			Window.alert("Sorry, invalid word!");
-			//inputTextBox.setText("");			
+			// inputTextBox.setText("");
 		} else {
-			if (input.matches(".*\\d+.*")){
+			if (input.matches(".*\\d+.*")) {
 				// Go to next step
 				colorChanger(input);
 				inputTextBox.setText("");
 			} else {
 				Window.alert("Sorry, invalid word!");
 			}
-		}				
+		}
 	}
 
 	private void colorChanger(String input) {
-		//TODO Implement this method
-		//Window.alert("Hi, I'm the color changer!");
-		Button black = new Button("Black");
-		Button red = new Button("Red");
-		Button blue = new Button("Blue");
-		Button green = new Button("Green");
-		Button purple = new Button("Purple");
-		
+		// TODO Implement this method
+		// Window.alert("Hi, I'm the color changer!");
+		makeButtonPanel();
+
 		display.setText(input);
 		display.setStyleName("displayText");
-		display.getElement().getStyle().setColor("red");
-		
-		buttonPanel.add(black);
-		buttonPanel.add(red);
-		buttonPanel.add(blue);
-		buttonPanel.add(green);
-		buttonPanel.add(purple);
-		
+		// display.getElement().getStyle().setColor("red");
+
+	}
+
+	private void makeButtonPanel() {
+		buttonColors.add("Black");
+		buttonColors.add("Red");
+		buttonColors.add("Blue");
+		buttonColors.add("Green");
+		buttonColors.add("Purple");
+
+		for (int i = 0; i < buttonColors.size(); i++) {
+			final String color = buttonColors.get(i);
+			Button colorButton = new Button(color);
+
+			colorButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					display.getElement().getStyle().setColor(color);
+				}
+			});
+			
+			buttonPanel.add(colorButton);
+		}
 	}
 
 	private void updateLabel() {
