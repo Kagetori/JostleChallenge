@@ -321,7 +321,25 @@ public class JostleChallenge implements EntryPoint {
 		makeButtonPanel();
 
 		display.setText(input);
-		display.setStyleName("displayText");
+		setLabelSize();
+		display.addStyleName("displayText");
+		display.addStyleName("displaySize");
+		
+		// Setup timer to get width of screen automatically.
+		Timer refreshTimer = new Timer() {
+			@Override
+			public void run() {
+				setLabelSize();
+			}
+		};
+		refreshTimer.scheduleRepeating(500);
+	}
+
+	private void setLabelSize() {
+		// TODO Auto-generated method stub
+		int windowWidth = Window.getClientWidth();
+		StyleInjector.inject(".displaySize { font-size: " + windowWidth/10 + "px;");		
+		
 	}
 
 	// Makes buttons that change text color. Color strings must be valid.

@@ -31,11 +31,20 @@
 }
 
 .displayText {
-	font-size: 10em;
+/* 	font-size: 10em; */
 	font-weight: bold;
 	color: #000000;
 	text-align: center;
 }
+
+.displaySize {
+	font-size: 2em;
+}
+
+/* .gwt-Label { */
+/* 	width: 40% !important; */
+/* 	height: auto !important; */
+/* } */
 
 .gwt-Button-color {
 	margin: 0px 5px 0px 5px !important;
