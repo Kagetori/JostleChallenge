@@ -53,12 +53,15 @@ public class JostleChallenge implements EntryPoint {
 	private ScrollPanel tabTwoScroll = new ScrollPanel();
 	private Label alert = new Label();
 	private VerticalPanel tabThree = new VerticalPanel();
+	private ScrollPanel tabThreeScroll = new ScrollPanel();
 	private Label tabThreeTitle = new Label();
 	private HTML instructions = new HTML();
 	private HorizontalPanel textboxPanel = new HorizontalPanel();
 	private TextBox inputTextBox = new TextBox();
 	private Button submitButton = new Button("Submit");
+	private HorizontalPanel buttonPanel = new HorizontalPanel();
 	private Label feedback = new Label();
+	private Label display = new Label();
 	private String emptyMessage = "Please write something in the text box";
 	private JsonServiceAsync pictureServ = GWT.create(JsonService.class);
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
@@ -72,8 +75,7 @@ public class JostleChallenge implements EntryPoint {
 			tabs.addTab("Tab " + Integer.toString(i + 1));
 		}
 
-		// Adds things to deck
-		// TODO construct tabs 2&3
+		// Add things to deck
 		buildTabOne();
 		tabOneScroll.add(tabOne);
 		deck.add(tabOneScroll);
@@ -84,7 +86,8 @@ public class JostleChallenge implements EntryPoint {
 		deck.add(tabTwoScroll);
 
 		buildTabThree();
-		deck.add(tabThree);
+		tabThreeScroll.add(tabThree);
+		deck.add(tabThreeScroll);
 
 		// SelectionHandler for tabs
 		tabs.addSelectionHandler(new SelectionHandler<Integer>() {
@@ -228,6 +231,9 @@ public class JostleChallenge implements EntryPoint {
 	}
 
 	private void buildTabThree() {
+		tabThree.setWidth("100%");
+		tabThree.setHeight("100%");
+		tabThree.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		tabThreeTitle.setText("Hello! Welcome!");
 		tabThreeTitle.setStyleName("title");
 		instructions.setHTML("Please type your word below. A word must: "
@@ -272,6 +278,8 @@ public class JostleChallenge implements EntryPoint {
 		textboxPanel.add(submitButton);
 		tabThree.add(textboxPanel);
 		tabThree.add(feedback);
+		tabThree.add(display);
+		tabThree.add(buttonPanel);
 	}
 
 	// Checks if word follows the rules and if it does, go to next step
@@ -286,7 +294,7 @@ public class JostleChallenge implements EntryPoint {
 			if (input.matches(".*\\d+.*")){
 				// Go to next step
 				colorChanger(input);
-				//inputTextBox.setText("");
+				inputTextBox.setText("");
 			} else {
 				Window.alert("Sorry, invalid word!");
 			}
@@ -295,7 +303,22 @@ public class JostleChallenge implements EntryPoint {
 
 	private void colorChanger(String input) {
 		//TODO Implement this method
-		Window.alert("Hi, I'm the color changer!");
+		//Window.alert("Hi, I'm the color changer!");
+		Button black = new Button("Black");
+		Button red = new Button("Red");
+		Button blue = new Button("Blue");
+		Button green = new Button("Green");
+		Button purple = new Button("Purple");
+		
+		display.setText(input);
+		display.setStyleName("displayText");
+		display.getElement().getStyle().setColor("red");
+		
+		buttonPanel.add(black);
+		buttonPanel.add(red);
+		buttonPanel.add(blue);
+		buttonPanel.add(green);
+		buttonPanel.add(purple);
 		
 	}
 
