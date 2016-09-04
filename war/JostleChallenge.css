@@ -1,7 +1,13 @@
 /** Add css rules here for your application. */
 .gwt-TabBar .gwt-TabBarItem-wrapper {
 	width: 33.33%;
+	height: 50px;
 }
+
+.gwt-TabBar .gwt-TabBarItem {
+	height: 50px;
+}
+
 
 .tabOneVideo {
 	display: block;
@@ -31,6 +37,17 @@
 .gwt-Button-color {
 	margin: 0px 5px 0px 5px !important;
 }
+
+.fade {
+   opacity: 1;
+   transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+   }
+   
+   .fade:transition {
+      opacity: 0.5;
+      }
 
 /** Example rules used by the template application (remove for your app) */
 

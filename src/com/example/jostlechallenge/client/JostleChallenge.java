@@ -90,7 +90,6 @@ public class JostleChallenge implements EntryPoint {
 		deck.add(tabOneScroll);
 
 		buildTabTwo();
-		// tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		tabTwoScroll.add(tabTwo);
 		deck.add(tabTwoScroll);
 
@@ -107,15 +106,25 @@ public class JostleChallenge implements EntryPoint {
 		});
 
 		// TODO Fade in-out animation
+		//deck.addStyleName("fade");
+		deck.setAnimationEnabled(true);
+		
 		mainPanel.add(deck);
 		mainPanel.add(tabs);
 
+		mainPanel.setWidgetTopBottom(deck, 0, Unit.PX, 50, Unit.PX);
 		mainPanel.setWidgetBottomHeight(tabs, 0, Unit.PX, 50, Unit.PX);
 
 		tabs.selectTab(0);
 
 		// Associate main panel with HTML
 		RootLayoutPanel.get().add(mainPanel);
+		
+//		if(deck.isAnimationEnabled()){
+//			Window.alert("Animation is enabled for deck!");
+//		} else {
+//			Window.alert("Animation is NOT enabled for deck!");
+//		}
 
 	}
 
@@ -309,19 +318,15 @@ public class JostleChallenge implements EntryPoint {
 	}
 
 	private void colorChanger(String input) {
-		// TODO Implement this method
-		// Window.alert("Hi, I'm the color changer!");
 		makeButtonPanel();
 
 		display.setText(input);
 		display.setStyleName("displayText");
-		// display.getElement().getStyle().setColor("red");
-
 	}
 
 	// Makes buttons that change text color. Color strings must be valid.
 	private void makeButtonPanel() {
-		// Make sure you don't make multiple buttonPanels
+		// Makes sure you don't make multiple buttonPanels
 		if (buttonColors.size() == 0) {
 			Label colorChanger = new Label("Choose a color: ");
 			buttonPanel.add(colorChanger);
