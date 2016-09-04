@@ -24,6 +24,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DeckPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
@@ -51,6 +52,7 @@ public class JostleChallenge implements EntryPoint {
 	private Label alert = new Label();
 	private VerticalPanel tabThree = new VerticalPanel();
 	private Label tabThreeTitle = new Label();
+	private HTML instructions = new HTML();
 	private TextBox inputTextBox = new TextBox();
 	private Label feedback = new Label();
 	private String emptyMessage = "Please write something in the text box";
@@ -224,16 +226,21 @@ public class JostleChallenge implements EntryPoint {
 	private void buildTabThree() {
 		tabThreeTitle.setText("Hello! Welcome!");
 		tabThreeTitle.setStyleName("title");
+		instructions.setHTML("Please type your word below. A word must: "
+				+ "<br/>- have 5 - 12 characters"
+				+ "<br/>- contain at least one number"
+				+ "<br/>- not have any special characters, including spaces");
+		
 		feedback.setText(emptyMessage);
 
-		// Add keypress handler for textbox. Triggers for every key press.
+		// Add keypress handler for textbox. Triggers for characters.
 		inputTextBox.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				updateLabel();
 			}
 		});
 
-		// Add keydown handler for textbox. Triggers for every key press.
+		// Add keydown handler for textbox. Triggers for other keys.
 		inputTextBox.addKeyDownHandler(new KeyDownHandler() {
 			@Override
 			public void onKeyDown(KeyDownEvent event) {
@@ -246,14 +253,10 @@ public class JostleChallenge implements EntryPoint {
 			}
 		});
 
-		// TODO Add another listener for backspace and stuff
-
-		// feedback.setText("Hello!");
-
 		tabThree.add(tabThreeTitle);
+		tabThree.add(instructions);
 		tabThree.add(inputTextBox);
 		tabThree.add(feedback);
-
 	}
 
 	private void updateLabel() {
