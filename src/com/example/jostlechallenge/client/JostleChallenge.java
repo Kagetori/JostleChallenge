@@ -8,6 +8,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.dom.client.VideoElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,6 +19,10 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.http.client.URL;
@@ -314,6 +319,7 @@ public class JostleChallenge implements EntryPoint {
 
 	}
 
+	// Makes buttons that change text color. Color strings must be valid.
 	private void makeButtonPanel() {
 		buttonColors.add("Black");
 		buttonColors.add("Red");
@@ -333,6 +339,29 @@ public class JostleChallenge implements EntryPoint {
 			
 			buttonPanel.add(colorButton);
 		}
+		
+//		for (int i = 0; i < buttonColors.size(); i++) {
+//			final String color = buttonColors.get(i);
+//			Button colorButton = new Button(color);
+//			final String currentColor = "Black";
+//
+//			colorButton.addMouseOverHandler(new MouseOverHandler() {
+//				public void onMouseOver(MouseOverEvent event) {
+//					// TODO Auto-generated method stub
+//					currentColor = display.getElement().getStyle().getColor();
+//					display.getElement().getStyle().setColor(color);
+//				}
+//			});
+//			
+//			colorButton.addMouseOutHandler(new MouseOutHandler() {
+//				public void onMouseOut(MouseOutEvent event) {
+//					// TODO Auto-generated method stub
+//					display.getElement().getStyle().setColor(currentColor);
+//				}
+//			});
+//			
+//			buttonPanel.add(colorButton);
+//		}
 	}
 
 	private void updateLabel() {
