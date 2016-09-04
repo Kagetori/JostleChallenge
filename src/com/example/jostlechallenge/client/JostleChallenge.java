@@ -237,7 +237,7 @@ public class JostleChallenge implements EntryPoint {
 				}
 			});
 
-			// image.addStyleName("customImage");
+			image.addStyleName("customImage");
 
 			// Description for the picture
 			Label picDescription = new Label(pictures.get(i).getTitle());
