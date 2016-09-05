@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import com.example.jostlechallenge.client.Picture;
 import com.example.jostlechallenge.client.JsonService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
