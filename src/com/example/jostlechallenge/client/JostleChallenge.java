@@ -163,6 +163,8 @@ public class JostleChallenge implements EntryPoint {
 	}
 
 	private void buildTabTwo() {
+		tabTwo.setWidth("100%");
+		tabTwo.setHeight("100%");
 		tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		alert.setVisible(false);
 
@@ -229,6 +231,8 @@ public class JostleChallenge implements EntryPoint {
 	}
 
 	private void buildTabThree() {
+		tabThree.setWidth("100%");
+		tabThree.setHeight("100%");
 		tabThree.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		tabThreeTitle.setText("Hello! Welcome to the Text Color-Changer!");
 		tabThreeTitle.setStyleName("title");
