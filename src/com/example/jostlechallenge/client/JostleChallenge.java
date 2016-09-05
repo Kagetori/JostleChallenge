@@ -19,10 +19,6 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.http.client.URL;
@@ -74,6 +70,7 @@ public class JostleChallenge implements EntryPoint {
 	private String emptyMessage = "Please write something in the text box";
 	private JsonServiceAsync pictureServ = GWT.create(JsonService.class);
 	private static final String TITLE_URL = "http://jsonplaceholder.typicode.com/posts/1";
+	private static final String VIDEO_URL = "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4";
 
 	/**
 	 * Entry point method.
@@ -106,9 +103,9 @@ public class JostleChallenge implements EntryPoint {
 		});
 
 		// TODO Fade in-out animation
-		//deck.addStyleName("fade");
+		// deck.addStyleName("fade");
 		deck.setAnimationEnabled(true);
-		
+
 		mainPanel.add(deck);
 		mainPanel.add(tabs);
 
@@ -119,13 +116,6 @@ public class JostleChallenge implements EntryPoint {
 
 		// Associate main panel with HTML
 		RootLayoutPanel.get().add(mainPanel);
-		
-//		if(deck.isAnimationEnabled()){
-//			Window.alert("Animation is enabled for deck!");
-//		} else {
-//			Window.alert("Animation is NOT enabled for deck!");
-//		}
-
 	}
 
 	private void buildTabOne() {
@@ -138,12 +128,10 @@ public class JostleChallenge implements EntryPoint {
 
 		Video video = Video.createIfSupported();
 		if (video == null) {
-			// Error message here
 			Window.alert("HTML5 Video is not supported by your browser");
 			return;
 		}
-		video.addSource("http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4",
-				VideoElement.TYPE_MP4);
+		video.addSource(VIDEO_URL, VideoElement.TYPE_MP4);
 		video.setControls(true);
 		video.setStyleName("tabOneVideo");
 		tabOne.add(video);
@@ -175,10 +163,7 @@ public class JostleChallenge implements EntryPoint {
 	}
 
 	private void buildTabTwo() {
-		tabTwo.setWidth("100%");
-		tabTwo.setHeight("100%");
 		tabTwo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		tabTwo.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		alert.setVisible(false);
 
 		// making a RPC call to server and then getting server to get JSON from
@@ -193,17 +178,12 @@ public class JostleChallenge implements EntryPoint {
 		// Set up the callback object.
 		AsyncCallback<String> callback = new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {
-				// Got an error
 				alert.setText("The RPC call didn't work!");
 				alert.setVisible(true);
 			}
 
 			public void onSuccess(String result) {
-				// alert.setText("Picture title: " + result.getTitle());
-				// alert.setText("This is the result: " + result);
-				// alert.setVisible(true);
 				displayPictures(JsonUtils.<JsArray<Picture>>safeEval(result));
-				// updateTable(JsonUtils.<JsArray<StockData>>safeEval(response.getText()));
 			}
 		};
 
@@ -216,7 +196,7 @@ public class JostleChallenge implements EntryPoint {
 
 	private void displayPictures(JsArray<Picture> pictures) {
 		// Add picture and description to tab
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 500; i++) {
 			final Image image = new Image();
 			Picture picture = pictures.get(i);
 			final String id = picture.getId();
@@ -224,7 +204,7 @@ public class JostleChallenge implements EntryPoint {
 			// Hook up error handler (in case image doesn't load)
 			image.addErrorHandler(new ErrorHandler() {
 				public void onError(ErrorEvent event) {
-					alert.setText("An error occurred while loading.");
+					alert.setText("An error occurred while loading the images.");
 				}
 			});
 
@@ -246,17 +226,16 @@ public class JostleChallenge implements EntryPoint {
 			tabTwo.add(image);
 			tabTwo.add(picDescription);
 		}
-		Label out = new Label("Hello");
 	}
 
 	private void buildTabThree() {
-		tabThree.setWidth("100%");
-		tabThree.setHeight("100%");
 		tabThree.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		tabThreeTitle.setText("Hello! Welcome to the Text Color-Changer!");
 		tabThreeTitle.setStyleName("title");
-		instructions.setHTML("First, type your word below. A word must: " + "<br/>- have 5 - 12 characters"
-				+ "<br/>- contain at least one number" + "<br/>- not have any special characters, including spaces");
+		instructions.setHTML("First, type your word below. A word must: " 
+				+ "<br/>- have 5 - 12 characters"
+				+ "<br/>- contain at least one number" 
+				+ "<br/>- not have any special characters, including spaces");
 
 		feedback.setText(emptyMessage);
 
@@ -289,15 +268,62 @@ public class JostleChallenge implements EntryPoint {
 			}
 		});
 
-		tabThree.add(tabThreeTitle);
-		tabThree.add(instructions);
 		textboxPanel.add(inputTextBox);
 		textboxPanel.add(submitButton);
 		textboxPanel.addStyleName("textboxPanel");
+
+		tabThree.add(tabThreeTitle);
+		tabThree.add(instructions);
 		tabThree.add(textboxPanel);
 		tabThree.add(feedback);
 		tabThree.add(display);
 		tabThree.add(buttonPanel);
+	}
+
+	private void updateLabel() {
+		// Make a timer so it will get updated text from textbox
+		Timer timer = new Timer() {
+			public void run() {
+				String input = inputTextBox.getText();
+				checkString(input);
+			}
+		};
+		// Execute the timer
+		timer.schedule(1);
+	}
+
+	// Checks text for rules (5-12 chars, no special chars, at least one number)
+	private void checkString(String input) {
+
+		feedback.setStyleName("errorLabel");
+
+		if (!input.matches("^[0-9A-Za-z]{0,100}$")) {
+			feedback.setText("Please do not use special characters!");
+		} else {
+			if (input != "") {
+				if (input.length() >= 5) {
+					if (input.length() <= 12) {
+						if (input.matches(".*\\d+.*")) {
+							feedback.setText("Word is fine! Press the submit button!");
+							feedback.setStyleName("successLabel");
+						} else {
+							// No numbers
+							feedback.setText("Must contain at least one number");
+						}
+					} else {
+						// Text too long
+						feedback.setText("Please use less than 12 characters");
+					}
+				} else {
+					// Text too short
+					feedback.setText("Please use at least 5 characters");
+				}
+			} else {
+				// Textbox is empty
+				feedback.setText(emptyMessage);
+				feedback.setStyleName("neutralLabel");
+			}
+		}
 	}
 
 	// Checks if word follows the rules and if it does, go to next step
@@ -326,7 +352,7 @@ public class JostleChallenge implements EntryPoint {
 		setLabelSize();
 		display.addStyleName("displayText");
 		display.addStyleName("displaySize");
-		
+
 		// Setup timer to set size of label automatically.
 		Timer refreshTimer = new Timer() {
 			@Override
@@ -334,14 +360,7 @@ public class JostleChallenge implements EntryPoint {
 				setLabelSize();
 			}
 		};
-		refreshTimer.scheduleRepeating(500);
-	}
-
-	// Sets the size of the label as a function of screen width
-	private void setLabelSize() {
-		int windowWidth = Window.getClientWidth();
-		StyleInjector.inject(".displaySize { font-size: " + windowWidth/10 + "px;");		
-		
+		refreshTimer.scheduleRepeating(300);
 	}
 
 	// Makes buttons that change text color. Color strings must be valid.
@@ -371,73 +390,12 @@ public class JostleChallenge implements EntryPoint {
 				buttonPanel.add(colorButton);
 			}
 		}
-
-		// for (int i = 0; i < buttonColors.size(); i++) {
-		// final String color = buttonColors.get(i);
-		// Button colorButton = new Button(color);
-		// final String currentColor = "Black";
-		//
-		// colorButton.addMouseOverHandler(new MouseOverHandler() {
-		// public void onMouseOver(MouseOverEvent event) {
-		// // TODO Auto-generated method stub
-		// currentColor = display.getElement().getStyle().getColor();
-		// display.getElement().getStyle().setColor(color);
-		// }
-		// });
-		//
-		// colorButton.addMouseOutHandler(new MouseOutHandler() {
-		// public void onMouseOut(MouseOutEvent event) {
-		// // TODO Auto-generated method stub
-		// display.getElement().getStyle().setColor(currentColor);
-		// }
-		// });
-		//
-		// buttonPanel.add(colorButton);
-		// }
 	}
 
-	private void updateLabel() {
-		// Make a timer so it will get updated text from textbox
-		Timer timer = new Timer() {
-			public void run() {
-				String input = inputTextBox.getText();
-				checkString(input);
-			}
-		};
-		// Execute the timer
-		timer.schedule(1);
-	}
+	// Sets the size of the label as a function of screen width
+	private void setLabelSize() {
+		int windowWidth = Window.getClientWidth();
+		StyleInjector.inject(".displaySize { font-size: " + windowWidth / 10 + "px;");
 
-	// Checks text for rules (5-12 chars, no special chars, at least one number)
-	private void checkString(String input) {
-		feedback.setStyleName("errorLabel");
-		
-		if (!input.matches("^[0-9A-Za-z]{0,100}$")) {
-			feedback.setText("Please do not use special characters!");
-		} else {
-			if (input != "") {
-				if (input.length() >= 5) {
-					if (input.length() <= 12) {
-						if (input.matches(".*\\d+.*")) {
-							feedback.setText("Word is fine! Press the submit button!");
-							feedback.setStyleName("successLabel");
-						} else {
-							// No numbers
-							feedback.setText("Must contain at least one number");
-						}
-					} else {
-						// Text too long
-						feedback.setText("Please use less than 12 characters");
-					}
-				} else {
-					// Text too short
-					feedback.setText("Please use at least 5 characters");
-				}
-			} else {
-				// Textbox is empty
-				feedback.setText(emptyMessage);
-				feedback.setStyleName("neutralLabel");
-			}
-		}
 	}
 }
