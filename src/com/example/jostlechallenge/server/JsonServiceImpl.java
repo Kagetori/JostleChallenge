@@ -12,10 +12,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class JsonServiceImpl extends RemoteServiceServlet implements JsonService {
 	private static String PICTURE_URL = "http://jsonplaceholder.typicode.com/photos";
 
-	public String getPictures(){
-		//get data from server		
+	// Get data from server	
+	public String getPictures(){	
 		String jsonString = queryPicturesFromRemote();
-		//String sample = jsonString.substring(0, 20);
 		
 		return jsonString;
 	}
